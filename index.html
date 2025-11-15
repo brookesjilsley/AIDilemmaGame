@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dilemma: The Coursework Chronicles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .integrity-meter {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444 0%, #fbbf24 50%, #22c55e 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .start-screen, .scenario-screen, .ending-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 30px;
+        }
+
+        .teacher-intro {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 20px;
+        }
+
+        .teacher-card {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .teacher-avatar {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        .teacher-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .teacher-card p {
+            font-size: 0.9em;
+            color: #6b7280;
+        }
+
+        .scenario-content {
+            margin-bottom: 30px;
+        }
+
+        .scenario-title {
+            color: #1e3a8a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .scenario-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #374151;
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #3b82f6;
+            margin-bottom: 20px;
+        }
+
+        .teacher-advice {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .advice-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .advice-card.helpful {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+        }
+
+        .advice-card.strict {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+        }
+
+        .advice-card.shortcut {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+        }
+
+        .advice-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .advice-text {
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            font-size: 1.1em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .ending-screen {
+            padding: 20px;
+        }
+
+        .ending-emoji {
+            font-size: 6em;
+            margin: 20px 0;
+        }
+
+        .ending-title {
+            color: #1e3a8a;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .ending-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #374151;
+            margin-bottom: 20px;
+        }
+
+        .ending-explanation {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .ending-explanation h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .ending-explanation ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .jcq-reminder {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #f59e0b;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .jcq-reminder strong {
+            color: #1e3a8a;
+            font-size: 1.1em;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .teacher-intro {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .advice-card {
+                min-width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .consequence-alert {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .positive-feedback {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🎓 AI Dilemma 🎓</h1>
+            <p>The Coursework Chronicles</p>
+            <div class="integrity-meter">
+                <div class="meter-label">
+                    <span>Academic Integrity</span>
+                    <span id="integrity-score">100/100</span>
+                </div>
+                <div class="meter-bar">
+                    <div class="meter-fill" id="integrity-fill" style="width: 100%;">
+                        <span>😊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Start Screen -->
+            <div id="start-screen" class="start-screen">
+                <h2>Welcome to AI Dilemma!</h2>
+                <p>You're a Year 13 student at Archbishop Ilsley Catholic School facing real coursework challenges. Your decisions about using AI will determine your fate!</p>
+                
+                <p><strong>You'll meet three teachers who will give you advice:</strong></p>
+                
+                <div class="teacher-intro">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar">👨‍🏫</div>
+                        <h3>Mr. Strict</h3>
+                        <p>Always follows the rules to the letter</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-avatar">👩‍🏫</div>
+                        <h3>Ms. Helpful</h3>
+                        <p>Wants you to succeed the right way</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-avatar">🧑‍🏫</div>
+                        <h3>Dr. Shortcut</h3>
+                        <p>Takes the easy way out (don't listen!)</p>
+                    </div>
+                </div>
+
+                <p><strong>Your choices matter!</strong> Make good decisions to maintain your Academic Integrity score. Remember: the JCQ takes AI misuse seriously!</p>
+
+                <button class="start-btn" onclick="startGame()">Start Your Journey</button>
+            </div>
+
+            <!-- Scenario Screen -->
+            <div id="scenario-screen" class="scenario-screen hidden">
+                <div class="scenario-content">
+                    <h2 class="scenario-title" id="scenario-title"></h2>
+                    <div class="scenario-text" id="scenario-text"></div>
+                    
+                    <div class="teacher-advice" id="teacher-advice"></div>
+                </div>
+                
+                <div class="choices" id="choices"></div>
+            </div>
+
+            <!-- Ending Screen -->
+            <div id="ending-screen" class="ending-screen hidden">
+                <div class="ending-emoji" id="ending-emoji"></div>
+                <h2 class="ending-title" id="ending-title"></h2>
+                <div class="ending-text" id="ending-text"></div>
+                <div class="ending-explanation" id="ending-explanation"></div>
+                <div class="jcq-reminder">
+                    <strong>Remember the JCQ Rules:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>AI can NEVER be used in exams</li>
+                        <li>AI use in coursework depends on your qualification</li>
+                        <li>You MUST reference any AI use clearly</li>
+                        <li>AI-generated content cannot get marks</li>
+                        <li>Misusing AI is malpractice - it's cheating!</li>
+                        <li>Always sign the declaration form honestly</li>
+                    </ul>
+                </div>
+                <button class="restart-btn" onclick="restartGame()">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let integrityScore = 100;
+        let currentScenario = 0;
+        let playerPath = [];
+
+        const scenarios = [
+            {
+                id: 1,
+                title: "📝 Scenario 1: The Late Night Essay Crisis",
+                text: "It's 11:47 PM. Your 2000-word English Literature essay on Gothic literature is due tomorrow at 9 AM, and you've only written 500 words. You're exhausted. Your friend just texted you: 'Just use ChatGPT, everyone does it!'",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "Absolutely not! The JCQ is crystal clear - you cannot submit AI-generated work as your own. That's malpractice. Stay up and write what you can, then talk to me in the morning about an extension."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "I understand the pressure, but your integrity is more important than one essay. Write what you can tonight, and see me first thing tomorrow. We can discuss options. Remember: AI can help you brainstorm, but you can't use it to write your essay."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Look, just generate it with ChatGPT and change a few words. Nobody will know the difference! You'll be fine - everyone does it."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Use ChatGPT to write the whole essay and submit it as my own work",
+                        consequence: -40,
+                        outcome: "critical",
+                        feedback: "This is serious malpractice! You've submitted AI-generated work as your own. According to JCQ rules, this could result in disqualification from the entire subject."
+                    },
+                    {
+                        text: "Use ChatGPT for ideas, copy some phrases, but don't reference it",
+                        consequence: -30,
+                        outcome: "bad",
+                        feedback: "This is still malpractice! Even using AI-generated phrases without referencing is cheating. The JCQ requires ALL AI use to be referenced clearly."
+                    },
+                    {
+                        text: "Write what I can tonight and request an extension tomorrow, explaining the situation honestly",
+                        consequence: 0,
+                        outcome: "good",
+                        feedback: "Good decision! Being honest about struggling is always better than cheating. Your teacher can work with you on this."
+                    },
+                    {
+                        text: "Use ChatGPT ONLY for brainstorming ideas, write everything myself, and reference the AI use properly",
+                        consequence: 5,
+                        outcome: "excellent",
+                        feedback: "Excellent! This is appropriate AI use. You're using it as a tool to help you think, but the work is still your own. Just make sure to reference it: 'ChatGPT (OpenAI, [date]) was used for initial brainstorming.'"
+                    }
+                ],
+                nextScenario: 2
+            },
+            {
+                id: 2,
+                title: "🎯 Scenario 2: The Group Project Dilemma",
+                text: "You're working on a Media Studies group presentation about video game industry analysis. One group member has created some slides using AI-generated content from Claude. They look amazing, but they haven't added any references. Your presentation is tomorrow.",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "Every member of the group is responsible for the final submission. If there's unreferenced AI content, you're ALL guilty of malpractice. You must add proper references immediately or remove that content."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "Talk to your group member right now. Explain that you need to reference the AI use properly: name the tool, date, how it was used, and keep screenshots. It's not too late to fix this!"
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Just present it! Teachers can't prove it was AI anyway. The slides look professional - that's what matters."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Present the slides as-is without any references",
+                        consequence: -35,
+                        outcome: "critical",
+                        feedback: "Major malpractice! All group members could be penalized for unreferenced AI use. The JCQ treats this as seriously as plagiarism."
+                    },
+                    {
+                        text: "Add a small note at the end saying 'AI was used' without details",
+                        consequence: -15,
+                        outcome: "bad",
+                        feedback: "Not good enough! JCQ requires detailed referencing: which AI tool, when, how it was used, and screenshots of prompts and responses."
+                    },
+                    {
+                        text: "Rewrite the AI-generated content in your own words based on your own research",
+                        consequence: 5,
+                        outcome: "good",
+                        feedback: "Smart choice! By creating original content, you've avoided the malpractice issue entirely. Your work is now genuinely your own."
+                    },
+                    {
+                        text: "Keep the slides but add full, proper references for all AI use (tool name, date, purpose, screenshots)",
+                        consequence: 5,
+                        outcome: "excellent",
+                        feedback: "Perfect! This is exactly how to handle AI use ethically. You've followed JCQ guidelines completely. Remember: the AI content won't get marks, but your own analysis will."
+                    }
+                ],
+                nextScenario: 3
+            },
+            {
+                id: 3,
+                title: "🎓 Scenario 3: The Final Exam Temptation",
+                text: "You're sitting your A-Level Media Studies exam. It's a closed-book exam. You have your phone in your pocket (you forgot to hand it in). You're stuck on a question about audience theory. You could quickly Google the answer or ask ChatGPT...",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "STOP! Using any AI tool in an exam is NEVER allowed under any circumstances. This would result in immediate disqualification from all your exams. Put the phone out of your mind."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "I know you're stressed, but using your phone in an exam is the worst decision you could make. Write what you know, move on, and come back to it. Your knowledge is enough."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Just be quick about it. Cup your phone in your hand, search under the desk. One quick answer won't hurt..."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Use my phone to search for the answer",
+                        consequence: -50,
+                        outcome: "disaster",
+                        feedback: "CATASTROPHIC DECISION! Using any device or AI in an exam is the most serious form of malpractice. You would be disqualified from ALL your exams, not just this one. This could destroy your entire A-Level results."
+                    },
+                    {
+                        text: "Just look at my phone to 'check the time' and maybe see a notification with helpful info",
+                        consequence: -40,
+                        outcome: "critical",
+                        feedback: "Still malpractice! Any unauthorized device use in an exam is forbidden. Even if you didn't actively search, you could be disqualified for having your phone accessible."
+                    },
+                    {
+                        text: "Leave the question, move on to others, and come back to it later if I have time",
+                        consequence: 5,
+                        outcome: "good",
+                        feedback: "Good exam strategy! This is what successful students do. Answer what you know first, then return to harder questions. Your own knowledge is what's being tested."
+                    },
+                    {
+                        text: "Raise my hand and give my phone to the invigilator, then answer based only on what I know",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Outstanding integrity! By voluntarily handing in your phone, you've shown complete honesty. This is the mark of true academic character. Answer what you can - that's all anyone can ask."
+                    }
+                ],
+                nextScenario: 4
+            },
+            {
+                id: 4,
+                title: "📋 Scenario 4: The Declaration Form",
+                text: "You're about to submit your coursework for assessment. You need to sign the JCQ Candidate Declaration Form. You DID use ChatGPT to help brainstorm some ideas at the start (which was allowed), but you're not sure if you referenced it properly in your bibliography. The form asks you to confirm all work is your own and all AI use is referenced. What do you do?",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "Do NOT sign that form until you're absolutely certain all AI use is properly referenced. Signing a false declaration is serious malpractice. Check your work now."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "Take a moment to double-check. Look at your bibliography - is the ChatGPT use listed? If not, add it now before signing. Better to delay submission by 10 minutes than commit malpractice."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "You barely used it, right? Just sign the form. They won't check every little thing. You've done the work yourself anyway."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Sign the declaration even though I'm not sure about the referencing",
+                        consequence: -30,
+                        outcome: "critical",
+                        feedback: "This is serious malpractice! Signing a false declaration is a criminal offense. If AI use is discovered later, you'll face much harsher penalties than if you'd been honest now."
+                    },
+                    {
+                        text: "Sign it and hope nobody notices the missing reference",
+                        consequence: -25,
+                        outcome: "bad",
+                        feedback: "Very risky! If your unreferenced AI use is discovered, you've now committed TWO forms of malpractice: using AI without referencing AND signing a false declaration."
+                    },
+                    {
+                        text: "Don't sign yet - check my work and add the ChatGPT reference to my bibliography now",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Perfect decision! Taking an extra few minutes to ensure proper referencing shows real integrity. Now you can sign the declaration with complete honesty."
+                    },
+                    {
+                        text: "Ask my teacher to review my bibliography with me before signing to make absolutely sure",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Excellent! Asking for help shows maturity and responsibility. Your teacher would rather help you get it right than deal with a malpractice case later."
+                    }
+                ],
+                nextScenario: "ending"
+            }
+        ];
+
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('scenario-screen').classList.remove('hidden');
+            loadScenario(0);
+        }
+
+        function loadScenario(index) {
+            if (index >= scenarios.length) {
+                showEnding();
+                return;
+            }
+
+            currentScenario = index;
+            const scenario = scenarios[index];
+
+            // Clear any old feedback
+            const oldFeedback = document.querySelectorAll('.consequence-alert, .positive-feedback');
+            oldFeedback.forEach(fb => fb.remove());
+
+            document.getElementById('scenario-title').textContent = scenario.title;
+            document.getElementById('scenario-text').textContent = scenario.text;
+
+            // Load teacher advice
+            const adviceContainer = document.getElementById('teacher-advice');
+            adviceContainer.innerHTML = '';
+            scenario.advice.forEach(advice => {
+                const card = document.createElement('div');
+                card.className = `advice-card ${advice.type}`;
+                card.innerHTML = `
+                    <div class="advice-header">
+                        <span style="font-size: 1.5em;">${advice.emoji}</span>
+                        <span>${advice.teacher} says:</span>
+                    </div>
+                    <div class="advice-text">"${advice.text}"</div>
+                `;
+                adviceContainer.appendChild(card);
+            });
+
+            // Load choices
+            const choicesContainer = document.getElementById('choices');
+            choicesContainer.innerHTML = '';
+            scenario.choices.forEach((choice, choiceIndex) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice.text;
+                btn.onclick = () => makeChoice(choiceIndex);
+                choicesContainer.appendChild(btn);
+            });
+
+            // Scroll to top of content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function makeChoice(choiceIndex) {
+            const scenario = scenarios[currentScenario];
+            const choice = scenario.choices[choiceIndex];
+            
+            // Update integrity score
+            integrityScore += choice.consequence;
+            if (integrityScore < 0) integrityScore = 0;
+            if (integrityScore > 100) integrityScore = 100;
+            
+            updateIntegrityMeter();
+
+            // Store the choice
+            playerPath.push({
+                scenario: currentScenario,
+                choice: choiceIndex,
+                outcome: choice.outcome
+            });
+
+            // Show feedback
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = choice.consequence >= 0 ? 'positive-feedback' : 'consequence-alert';
+            feedbackDiv.innerHTML = `
+                <strong>${choice.consequence >= 0 ? '✅ Good Choice!' : '⚠️ Consequence!'}</strong>
+                <p style="margin-top: 10px;">${choice.feedback}</p>
+            `;
+            
+            // Insert feedback before choices
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.parentNode.insertBefore(feedbackDiv, choicesDiv);
+
+            // Disable all choice buttons
+            const buttons = document.querySelectorAll('.choice-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
+
+            // Add continue button
+            const continueBtn = document.createElement('button');
+            continueBtn.className = 'start-btn';
+            continueBtn.textContent = 'Continue →';
+            continueBtn.style.marginTop = '20px';
+            continueBtn.onclick = () => {
+                if (scenario.nextScenario === "ending") {
+                    showEnding();
+                } else {
+                    // nextScenario is 1-based (scenario ID), convert to 0-based index
+                    const nextIndex = scenarios.findIndex(s => s.id === scenario.nextScenario);
+                    if (nextIndex !== -1) {
+                        loadScenario(nextIndex);
+                    } else {
+                        showEnding();
+                    }
+                }
+            };
+            
+            feedbackDiv.appendChild(continueBtn);
+        }
+
+        function updateIntegrityMeter() {
+            const fill = document.getElementById('integrity-fill');
+            const scoreText = document.getElementById('integrity-score');
+            
+            fill.style.width = integrityScore + '%';
+            scoreText.textContent = integrityScore + '/100';
+
+            // Update emoji based on score
+            let emoji = '😊';
+            if (integrityScore >= 90) emoji = '😊';
+            else if (integrityScore >= 70) emoji = '😐';
+            else if (integrityScore >= 50) emoji = '😟';
+            else if (integrityScore >= 30) emoji = '😰';
+            else emoji = '😱';
+
+            fill.innerHTML = `<span>${emoji}</span>`;
+        }
+
+        function showEnding() {
+            document.getElementById('scenario-screen').classList.add('hidden');
+            document.getElementById('ending-screen').classList.remove('hidden');
+
+            let ending;
+
+            if (integrityScore >= 90) {
+                ending = {
+                    emoji: '🏆',
+                    title: 'Outstanding Academic Integrity!',
+                    text: 'Congratulations! You\'ve navigated all the challenges with honesty and integrity. You understand the JCQ AI guidance and know how to use AI tools ethically.',
+                    explanation: `
+                        <h3>What You Did Right:</h3>
+                        <ul>
+                            <li>You recognized when AI use was appropriate and when it wasn't</li>
+                            <li>You always referenced AI use properly when allowed</li>
+                            <li>You never tried to pass AI-generated work as your own</li>
+                            <li>You were honest on your declaration forms</li>
+                            <li>You prioritized your learning over shortcuts</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Result:</strong> You submit your coursework with complete confidence. Your teachers are proud of your integrity, and you've truly earned your grades.</p>
+                    `
+                };
+            } else if (integrityScore >= 60) {
+                ending = {
+                    emoji: '😌',
+                    title: 'You Made It... But It Was Close',
+                    text: 'You avoided serious malpractice, but you made some questionable decisions along the way. You need to be more careful about following JCQ guidelines.',
+                    explanation: `
+                        <h3>Areas for Improvement:</h3>
+                        <ul>
+                            <li>Some of your AI use was poorly referenced or inappropriate</li>
+                            <li>You took risks that could have led to malpractice</li>
+                            <li>You need to better understand when and how AI can be used</li>
+                            <li>Your declaration forms may not have been completely accurate</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Result:</strong> You submit your work, but you're worried. Some teachers might question certain aspects of your coursework. Next time, be more careful!</p>
+                    `
+                };
+            } else if (integrityScore >= 30) {
+                ending = {
+                    emoji: '😰',
+                    title: 'Serious Malpractice Detected',
+                    text: 'Your choices have resulted in multiple instances of academic malpractice. Your coursework would likely be flagged for investigation.',
+                    explanation: `
+                        <h3>What Went Wrong:</h3>
+                        <ul>
+                            <li>You used AI inappropriately multiple times</li>
+                            <li>You failed to reference AI use when required</li>
+                            <li>You may have signed false declarations</li>
+                            <li>You submitted work that wasn't genuinely your own</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Real Consequences:</strong> Your teachers spot inconsistencies in your work. An investigation begins. You could lose marks for specific pieces of work or even be disqualified from the subject.</p>
+                    `
+                };
+            } else {
+                ending = {
+                    emoji: '❌',
+                    title: 'Complete Academic Disaster',
+                    text: 'Your decisions have led to catastrophic malpractice. This would result in serious penalties from the exam board.',
+                    explanation: `
+                        <h3>Critical Mistakes:</h3>
+                        <ul>
+                            <li>You treated AI as a way to cheat rather than a learning tool</li>
+                            <li>You used unauthorized tools in exams</li>
+                            <li>You submitted AI-generated work as your own</li>
+                            <li>You signed false declarations</li>
+                            <li>You showed no academic integrity</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Real Consequences:</strong> You would be reported to the exam board for malpractice. Possible outcomes include: disqualification from all subjects, results withheld, or being barred from sitting exams for a period. Your university place could be withdrawn. This could affect your entire future.</p>
+                    `
+                };
+            }
+
+            document.getElementById('ending-emoji').textContent = ending.emoji;
+            document.getElementById('ending-title').textContent = ending.title;
+            document.getElementById('ending-text').textContent = ending.text;
+            document.getElementById('ending-explanation').innerHTML = ending.explanation;
+        }
+
+        function restartGame() {
+            integrityScore = 100;
+            currentScenario = 0;
+            playerPath = [];
+            updateIntegrityMeter();
+            
+            document.getElementById('ending-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
