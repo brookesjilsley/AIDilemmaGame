@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Dilemma: The Coursework Chronicles</title>
+    <title>AI Dilemma: Academic Adventures</title>
     <style>
         * {
             margin: 0;
@@ -367,7 +367,7 @@
     <div class="game-container">
         <div class="header">
             <h1>🎓 AI Dilemma 🎓</h1>
-            <p>The Coursework Chronicles</p>
+            <p>Academic Adventures</p>
             <div class="integrity-meter">
                 <div class="meter-label">
                     <span>Academic Integrity</span>
@@ -385,7 +385,7 @@
             <!-- Start Screen -->
             <div id="start-screen" class="start-screen">
                 <h2>Welcome to AI Dilemma!</h2>
-                <p>You're a Year 13 student at Archbishop Ilsley Catholic School facing real coursework challenges. Your decisions about using AI will determine your fate!</p>
+                <p>You're a 6th form student facing real academic challenges. Your decisions about using AI will determine your fate!</p>
                 
                 <p><strong>You'll meet three teachers who will give you advice:</strong></p>
                 
@@ -450,6 +450,17 @@
         let integrityScore = 100;
         let currentScenario = 0;
         let playerPath = [];
+        let shuffledChoices = []; // Track shuffled order
+
+        // Fisher-Yates shuffle algorithm
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
 
         const scenarios = [
             {
@@ -506,52 +517,52 @@
             },
             {
                 id: 2,
-                title: "🎯 Scenario 2: The Group Project Dilemma",
-                text: "You're working on a Media Studies group presentation about video game industry analysis. One group member has created some slides using AI-generated content from Claude. They look amazing, but they haven't added any references. Your presentation is tomorrow.",
+                title: "💼 Scenario 2: The Business Plan Bluff",
+                text: "For your Business Studies coursework, you're creating a business plan for a coffee shop. You need market research data for your local area. You ask ChatGPT: 'What's the average spending on coffee in Nottingham?' It confidently tells you: '£47 per person per month, with 68% of 18-25 year olds visiting coffee shops at least 3 times per week.' Perfect data! But you haven't verified if these statistics are real.",
                 advice: [
                     {
                         teacher: "Mr. Strict",
                         type: "strict",
                         emoji: "👨‍🏫",
-                        text: "Every member of the group is responsible for the final submission. If there's unreferenced AI content, you're ALL guilty of malpractice. You must add proper references immediately or remove that content."
+                        text: "Business coursework requires REAL market research - surveys, actual local data, verified statistics. AI-generated numbers are worthless and using fake data is malpractice. Use Mintel, ONS, or conduct your own primary research."
                     },
                     {
                         teacher: "Ms. Helpful",
                         type: "helpful",
                         emoji: "👩‍🏫",
-                        text: "Talk to your group member right now. Explain that you need to reference the AI use properly: name the tool, date, how it was used, and keep screenshots. It's not too late to fix this!"
+                        text: "AI often invents convincing-sounding statistics. For Business, you need credible sources: Office for National Statistics, industry reports, or your own surveys. Real data strengthens your business case."
                     },
                     {
                         teacher: "Dr. Shortcut",
                         type: "shortcut",
                         emoji: "🧑‍🏫",
-                        text: "Just present it! Teachers can't prove it was AI anyway. The slides look professional - that's what matters."
+                        text: "The numbers sound reasonable! Just use them - your business plan needs data and this is quicker than real research. Add 'market research' as a source."
                     }
                 ],
                 choices: [
                     {
-                        text: "Present the slides as-is without any references",
-                        consequence: -35,
+                        text: "Use the AI statistics and cite them as 'Market Research (2024)'",
+                        consequence: -40,
                         outcome: "critical",
-                        feedback: "Major malpractice! All group members could be penalized for unreferenced AI use. The JCQ treats this as seriously as plagiarism."
+                        feedback: "Serious malpractice! You're using fabricated data and disguising the source. Business decisions need real data. Your teacher will recognize these aren't from legitimate sources."
                     },
                     {
-                        text: "Add a small note at the end saying 'AI was used' without details",
+                        text: "Use the numbers but honestly cite 'ChatGPT (2024)' as the source",
                         consequence: -15,
                         outcome: "bad",
-                        feedback: "Not good enough! JCQ requires detailed referencing: which AI tool, when, how it was used, and screenshots of prompts and responses."
+                        feedback: "At least you're honest, but the data is still worthless for Business coursework. AI-generated statistics have no validity. You won't get marks for fake market research."
                     },
                     {
-                        text: "Rewrite the AI-generated content in your own words based on your own research",
+                        text: "Find real data from ONS, Mintel, or conduct a survey of local customers",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Excellent! Real market research makes your business plan credible and academically sound. This is proper Business Studies methodology and will earn full marks."
+                    },
+                    {
+                        text: "Use the AI data to estimate what to look for, then research actual local statistics",
                         consequence: 5,
                         outcome: "good",
-                        feedback: "Smart choice! By creating original content, you've avoided the malpractice issue entirely. Your work is now genuinely your own."
-                    },
-                    {
-                        text: "Keep the slides but add full, proper references for all AI use (tool name, date, purpose, screenshots)",
-                        consequence: 5,
-                        outcome: "excellent",
-                        feedback: "Perfect! This is exactly how to handle AI use ethically. You've followed JCQ guidelines completely. Remember: the AI content won't get marks, but your own analysis will."
+                        feedback: "Good approach! AI helped you identify what data you need, but you're doing real research. Just don't include the AI numbers - only use verified statistics."
                     }
                 ],
                 nextScenario: 3
@@ -658,6 +669,266 @@
                         feedback: "Excellent! Asking for help shows maturity and responsibility. Your teacher would rather help you get it right than deal with a malpractice case later."
                     }
                 ],
+                nextScenario: 5
+            },
+            {
+                id: 5,
+                title: "📚 Scenario 5: The Fake Citation Crisis",
+                text: "You're writing your History coursework on the Industrial Revolution. ChatGPT gives you an amazing quote: 'As Professor Sarah Mitchell states in her 2019 study, \"working conditions improved dramatically by 1850.\"' Perfect for your argument! But when you search for Professor Mitchell's 2019 study to add to your bibliography, you can't find it anywhere. Google shows nothing.",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "This is a classic AI hallucination! ChatGPT has invented a fake source. Using fabricated citations is serious academic misconduct. NEVER cite something you haven't verified exists."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "AI tools often 'hallucinate' - they make up convincing-sounding sources that don't exist. This is why you must always verify every fact, quote, and citation. Use real academic sources from JSTOR, Google Scholar, or your library."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Just use it anyway! Your teacher won't check every single reference. The quote supports your point - that's what matters."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Use the quote anyway and cite 'Professor Sarah Mitchell (2019)' in my bibliography",
+                        consequence: -35,
+                        outcome: "critical",
+                        feedback: "Serious academic misconduct! You're citing a source that doesn't exist. If your teacher checks (and they often do), you'll be caught fabricating sources - this is malpractice."
+                    },
+                    {
+                        text: "Use the quote but cite it as 'ChatGPT (2024)' instead",
+                        consequence: -20,
+                        outcome: "bad",
+                        feedback: "Still problematic! You're using potentially false information. The 'fact' might be completely made up. Plus, AI-generated content can't earn you marks anyway."
+                    },
+                    {
+                        text: "Remove the quote and search for real academic sources on working conditions in 1850",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Perfect! This is real research. You'll find actual historical sources you can trust and cite properly. Your work will be genuine and academically sound."
+                    },
+                    {
+                        text: "Ask ChatGPT for the full citation details, assuming it made a mistake",
+                        consequence: -15,
+                        outcome: "bad",
+                        feedback: "AI will often 'double down' and make up more fake details! It might invent a journal name, page numbers, everything. Always verify sources independently."
+                    }
+                ],
+                nextScenario: 6
+            },
+            {
+                id: 6,
+                title: "⚖️ Scenario 6: The Criminology Theory Confusion",
+                text: "For your Criminology coursework, you need to explain 'Right Realism' and apply it to youth crime. You're confused about the theory, so you ask ChatGPT. It produces brilliant paragraphs explaining rational choice theory, the broken windows approach, and zero tolerance policing. You copy-paste it into your work (planning to reference it). Your teacher reads your draft and asks: 'This is good, but can you explain how Right Realism differs from Left Realism in your case study?'",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "Criminology is about understanding and critically applying theories. If you can't discuss Right Realism vs Left Realism, you don't understand the material. Even with referencing, copying theory you don't understand is academically dishonest."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "Use AI to help you understand the theory - that's fine. But then you need to read your textbook, compare the approaches, and write it in your own words showing YOUR understanding. That's what gets marks."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Just ask ChatGPT the difference between Right and Left Realism now! Then you'll have an answer ready. Keep using AI for every question."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Quickly Google the difference and try to give an answer on the spot",
+                        consequence: -15,
+                        outcome: "bad",
+                        feedback: "You're still not learning properly. Surface-level answers won't help in exams. You need to genuinely understand criminological theories to apply them effectively."
+                    },
+                    {
+                        text: "Admit I don't fully understand the theories yet and ask for help to learn them properly",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Excellent honesty! Your teacher can now help you understand the theoretical differences. You'll rewrite it properly and actually learn the criminology."
+                    },
+                    {
+                        text: "Keep the AI text but now actually study Right and Left Realism to understand the differences",
+                        consequence: 5,
+                        outcome: "good",
+                        feedback: "Good recovery! But for Criminology, understanding must come FIRST. The process of applying theories yourself develops critical analysis skills needed for A-Level."
+                    },
+                    {
+                        text: "Make up an answer based on what I think it might be",
+                        consequence: -25,
+                        outcome: "bad",
+                        feedback: "Terrible approach! Your teacher knows criminological theory well. Making up explanations shows you haven't done the work and compounds the dishonesty."
+                    }
+                ],
+                nextScenario: 7
+            },
+            {
+                id: 7,
+                title: "⚖️ Scenario 7: The Biased Information Problem",
+                text: "For your Politics coursework on climate policy, you ask AI: 'Is climate change real and what should governments do?' The AI gives you a very confident, one-sided answer with specific 'statistics' that perfectly support your planned argument. It cites percentages and dates, and sounds completely authoritative. You're tempted to use this information.",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "AI reflects biases from its training data and can present opinion as fact. For Politics coursework, you MUST use multiple peer-reviewed sources and present balanced arguments. AI shortcuts produce poor scholarship."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "AI can be helpful for exploring a topic, but never as your only source. Always cross-check facts with reputable sources. Academic work requires you to evaluate multiple perspectives critically."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "The AI gave you exactly what you needed! Just use it - statistics make your argument look strong. Who has time to check multiple sources?"
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Use the AI's statistics and arguments directly, citing ChatGPT as my source",
+                        consequence: -25,
+                        outcome: "bad",
+                        feedback: "Poor academic practice! AI-generated statistics might be false, and you've shown no critical thinking. Politics coursework requires analysis of multiple sources, not one-sided AI output."
+                    },
+                    {
+                        text: "Use the information but attribute it to 'research shows' without mentioning AI",
+                        consequence: -35,
+                        outcome: "critical",
+                        feedback: "This is malpractice! You're presenting AI output as verified research. The statistics could be made up. You could fail the entire assignment."
+                    },
+                    {
+                        text: "Verify each statistic through reputable sources like government data, peer-reviewed journals, and academic databases",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Excellent critical thinking! You'll likely find the AI mixed accurate data with errors or bias. Real research makes your argument much stronger and academically credible."
+                    },
+                    {
+                        text: "Use the AI answer as a starting point to identify topics, then research multiple perspectives properly",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Perfect approach! Using AI to brainstorm topics is fine, but then doing real research with diverse sources shows genuine academic skill. This is ethical AI use."
+                    }
+                ],
+                nextScenario: 8
+            },
+            {
+                id: 8,
+                title: "🌍 Scenario 8: The Geography Data Disaster",
+                text: "You're writing a Geography NEA (Non-Examined Assessment) on coastal management strategies. You ask ChatGPT: 'What are the recent sea level rise statistics for the East Anglian coast?' It gives you detailed figures: '3.2mm per year between 2015-2020' with specific data about erosion rates at Happisburgh. This sounds perfect and specific. You're about to use it in your analysis.",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "Geography NEA requires PRIMARY data collection or VERIFIED secondary sources. AI cannot access current environmental data, tide gauges, or recent surveys. You must use British Geological Survey, Met Office, or actual field measurements."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "For Geography, data accuracy is everything. AI might give outdated or generalized figures. Use official sources: BGS, Environment Agency, academic journals, or collect your own data. That's what earns high marks."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "The numbers are in the right ballpark! Just use them - Geography teachers can't check every statistic. It's faster than finding real data sources."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Use the AI statistics and cite them as 'Coastal Survey Data (2020)'",
+                        consequence: -40,
+                        outcome: "critical",
+                        feedback: "Serious academic misconduct! You're fabricating data sources for a Geography NEA. These figures might be completely wrong. Your teacher will check sources for NEA work."
+                    },
+                    {
+                        text: "Use the figures but cite ChatGPT honestly as the source",
+                        consequence: -20,
+                        outcome: "bad",
+                        feedback: "At least you're honest, but AI-generated environmental data is worthless for Geography coursework. You need verified measurements from credible scientific sources."
+                    },
+                    {
+                        text: "Check the British Geological Survey, Environment Agency, and academic studies for actual data",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Perfect! Real geographical data from authoritative sources makes your NEA credible. You might find the AI was wrong - accurate data is crucial for geographical analysis."
+                    },
+                    {
+                        text: "Conduct fieldwork or use primary data collection for coastal measurements myself",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Outstanding! Primary data collection is the gold standard for Geography NEA. This shows genuine geographical skills and earns maximum marks. Combine with verified secondary sources."
+                    }
+                ],
+                nextScenario: 9
+            },
+            {
+                id: 9,
+                title: "✍️ Scenario 9: The Paraphrasing Illusion",
+                text: "For your English Literature essay on 'Othello', you used ChatGPT to analyze the themes of jealousy and manipulation. Instead of copying directly, you've been clever - you've changed some words, flipped sentences around, and used a thesaurus. 'Destructive jealousy' became 'corrosive envy.' You didn't reference the AI because you technically 'rewrote' it. But you don't really understand the analysis - you just reworded it.",
+                advice: [
+                    {
+                        teacher: "Mr. Strict",
+                        type: "strict",
+                        emoji: "👨‍🏫",
+                        text: "This is still plagiarism! Paraphrasing without understanding and without citation is academic dishonesty. The ideas came from AI, not from your engagement with the text. You must reference ALL AI use."
+                    },
+                    {
+                        teacher: "Ms. Helpful",
+                        type: "helpful",
+                        emoji: "👩‍🏫",
+                        text: "Real paraphrasing comes from understanding. Read your own copy of the play, form your own ideas, then write. If AI helped you understand Shakespeare's techniques, reference it, but the literary analysis must be yours."
+                    },
+                    {
+                        teacher: "Dr. Shortcut",
+                        type: "shortcut",
+                        emoji: "🧑‍🏫",
+                        text: "Smart strategy! If you've changed enough words, it's your work now. Teachers can't prove you used AI if you've paraphrased it well."
+                    }
+                ],
+                choices: [
+                    {
+                        text: "Submit it as-is - I changed the words so it's my own work now",
+                        consequence: -35,
+                        outcome: "critical",
+                        feedback: "This is malpractice! Paraphrasing AI without understanding or citation is plagiarism. AI detectors and your teacher's knowledge of your writing style may catch this. The ideas aren't yours."
+                    },
+                    {
+                        text: "Keep the paraphrased content but add a reference: 'Analysis developed with assistance from ChatGPT'",
+                        consequence: -10,
+                        outcome: "bad",
+                        feedback: "Better for honesty, but you still won't get marks for AI-generated ideas. Your analysis needs to come from YOUR reading of the text. You've wasted time paraphrasing instead of learning."
+                    },
+                    {
+                        text: "Delete it all, read the relevant scenes again, and write my own analysis based on my understanding",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Excellent decision! This is real learning. Your analysis will be genuine, you'll understand it deeply, and you'll develop the skills you need for the exam where there's no AI."
+                    },
+                    {
+                        text: "Use the AI analysis to understand Shakespeare's themes, then write a completely fresh analysis with my own examples from the play",
+                        consequence: 10,
+                        outcome: "excellent",
+                        feedback: "Perfect ethical AI use! You used it as a learning tool to understand concepts, then created original work. This is how AI can genuinely help education. Reference the initial AI assistance."
+                    }
+                ],
                 nextScenario: "ending"
             }
         ];
@@ -700,14 +971,21 @@
                 adviceContainer.appendChild(card);
             });
 
-            // Load choices
+            // Shuffle choices and keep track of original indices
+            shuffledChoices = scenario.choices.map((choice, originalIndex) => ({
+                ...choice,
+                originalIndex: originalIndex
+            }));
+            shuffledChoices = shuffleArray(shuffledChoices);
+
+            // Load shuffled choices
             const choicesContainer = document.getElementById('choices');
             choicesContainer.innerHTML = '';
-            scenario.choices.forEach((choice, choiceIndex) => {
+            shuffledChoices.forEach((choice, displayIndex) => {
                 const btn = document.createElement('button');
                 btn.className = 'choice-btn';
                 btn.textContent = choice.text;
-                btn.onclick = () => makeChoice(choiceIndex);
+                btn.onclick = () => makeChoice(choice.originalIndex);
                 choicesContainer.appendChild(btn);
             });
 
